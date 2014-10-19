@@ -1,0 +1,20 @@
+#!/usr/bin/env node
+var debug = require('debug')('lists');
+var app = require('../app');
+var noble = require("noble");
+
+app.set('port', process.env.PORT || 3000);
+
+noble.on('stateChange', function(state) {
+  if (state === 'poweredOn') {
+    noble.startScanning();
+    console.log('noble start scanning');
+  } else {
+    noble.stopScanning();
+    console.log('noble stop scanning');
+  }
+});
+
+var server = app.listen(app.get('port'), function() {
+  debug('Express server listening on port ' + server.address().port);
+});

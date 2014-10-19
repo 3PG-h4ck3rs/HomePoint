@@ -1,0 +1,5 @@
+<tr>
+    <td><input type="radio" name="selectedDevice" value="{{index}}"></td>
+    <td>{{deviceName}}</td>
+    <td>{{uuid}}</td>
+</tr>

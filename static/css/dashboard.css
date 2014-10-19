@@ -1,0 +1,78 @@
+.clockpicker-popover
+{
+    z-index: 1060;
+}
+
+.modal-header
+{
+    color: #31708f;
+    background-color: #d9edf7;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.searchingIndicator
+{
+    text-align: center;
+    padding: 22px;
+}
+
+    .searchingIndicator .loadingMessage
+    {
+        color: silver;
+        margin-top: 10px;
+    }
+
+#dashboard
+{
+    display: none;
+}
+
+    #dashboard .device
+    {
+        width: 200px;
+        height: 200px;
+        float: left;
+        margin-right: 20px;
+    }
+
+        #dashboard .device .deviceName .fa
+        {
+            margin-left: 10px;
+        }
+
+        #dashboard .device .deviceName .fa.fa-times:hover
+        {
+            color: #b20000;
+        }
+
+        #dashboard .device .icon
+        {
+            font-size: 70px;
+            color: #dfdfdf;
+        }
+
+        #dashboard .device.toggleDevice .panel-body
+        {
+            text-align: center;
+        }
+
+#emptyDashboard
+{
+    margin-top: 100px;
+    text-align: center;
+    display: none;
+}
+
+    #emptyDashboard h1
+    {
+        color: silver;
+        padding-bottom: 20px;
+    }
+
+#deviceList
+{
+    max-height: 300px;
+    overflow: auto;
+
+}

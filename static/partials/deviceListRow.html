@@ -1,0 +1,11 @@
+<tr>
+    <td><input type="radio" name="selectedDevice" value="{{index}}"></td>
+    <td>{{name}}</td>
+    <td>{{uuid}}</td>
+    <td>
+        <select name="deviceType_{{index}}" id="deviceType_{{index}}">
+            <option value="toggle">Toggle</option>
+            <option value="temp">Temp. sensor</option>
+        </select>
+    </td>
+</tr>

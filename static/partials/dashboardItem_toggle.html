@@ -1,0 +1,61 @@
+<div class="panel panel-default device toggleDevice">
+    <div class="panel-heading">
+        <h3 class="panel-title deviceName">
+            <i class="fa fa-times close"></i>
+            <i class="fa fa-calendar close"></i>
+			{{name}}
+        </h3>
+    </div>
+    <div class="panel-body">
+        <div class="icon">
+            <i class="fa fa-power-off"></i>
+        </div>
+        <div class="btn-group toggle" data-toggle="buttons">
+            <label class="btn btn-danger active offBtn">
+                <input type="radio" name="state" value="off" checked="checked"/> Off
+            </label>
+
+            <label class="btn btn-default onBtn">
+                <input type="radio" name="state" value="on" /> On
+            </label>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="scheduleModal_{{uuid}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="fa fa-times close" data-dismiss="modal"></i>
+                <h4 class="modal-title">Schedule devices</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+                        <label for="scheduleState">State</label>
+                        <select id="scheduleState" class="form-control">
+                            <option>On</option>
+                            <option>Off</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input class="form-control scheduleDate" type="text" placeholder="Enter date">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Time</label>
+                        <input class="form-control scheduleTime" type="text" placeholder="Enter time">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button"
+                        class="btn btn-primary"
+                        id="addDeviceBtn"><i class="fa fa-calendar"></i> Schedule</button>
+            </div>
+        </div>
+    </div>
+</div>

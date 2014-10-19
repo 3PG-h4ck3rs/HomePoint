@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% macro loading(message) %}
+<div class="searchingIndicator">
+    <img src="/static/img/searching.gif" alt="Searching" />
+    <div class="loadingMessage">{{message}}</div>
+</div>
+{% endmacro %}
+
+{% block styles %}
+    <link rel="stylesheet" href="/static/css/dashboard.css" />
+{% endblock %}
+
+{% block scripts %}
+    <script src="/static/js/device.js"></script>
+    <script src="/static/js/addDevice.js"></script>
+    <script src="/static/js/dashboard.js"></script>
+    <script src="/static/libs/mustache.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="dashboardLoading">
+        {{ loading("Retriving device list ...") }}
+    </div>
+
+    <div id="dashboard">
+        <div class="page-header">
+            <button class="btn btn-primary addDeviceBtn">
+                <i class="fa fa-plus"></i> Add device
+            </button>
+        </div>
+
+
+        <div id="dashboardItems">
+
+        </div>
+    </div>
+
+    <div id="emptyDashboard">
+        <h1>There are no devices</h1>
+        <button class="btn btn-primary btn-lg addDeviceBtn">
+            <i class="fa fa-plus"></i> Add device
+        </button>
+    </div>
+
+
+    <div class="modal fade" id="addDeviceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Available devices</h4>
+                </div>
+                <div class="modal-body" id="deviceList">
+
+                    <div class="alert alert-danger" role="alert" id="modalError">
+                        <button type="button" class="close" data-dismiss="alert">
+                            <i class="fa fa-times"></i>
+                        </button>
+                        <span></span>
+                    </div>
+
+                    {{ loading("Scanning for devices ...") }}
+
+                    <table class="table table-condensed table-striped">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Manufacturer</th>
+                                <th>Device name</th>
+                                <th>Device UID</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-primary"
+                            id="addDeviceBtn"
+                            disabled="disabled"><i class="fa fa-plus"></i> Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,23 @@
+<div class="panel panel-default device toggleDevice">
+    <div class="panel-heading">
+        <h3 class="panel-title deviceName">
+            <i class="fa fa-times close"></i>
+            <i class="fa fa-calendar close"></i>
+				{{name}}
+        </h3>
+    </div>
+    <div class="panel-body">
+        <div class="icon">
+            <i class="fa fa-power-off"></i>
+        </div>
+        <div class="btn-group toggle" data-toggle="buttons">
+            <label class="btn btn-primary active onBtn">
+                <input type="radio" name="state" value="on" checked="checked" /> On
+            </label>
+
+            <label class="btn btn-default offBtn">
+                <input type="radio" name="state" value="off"/> Off
+            </label>
+        </div>
+    </div>
+</div>
