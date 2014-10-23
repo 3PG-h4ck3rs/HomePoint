@@ -11,7 +11,11 @@ var nunjucks  = require('nunjucks');
 var mainControllers = require('./controllers/main');
 var apiControllers = require('./controllers/api');
 
+var fs = require("fs");
+
 var app = express();
+
+var modules = [];
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -30,13 +34,40 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use('/static', express.static(path.join(__dirname, 'static')));
 
+// expose module names to the views
 app.use(function(req,res,next){
-    res.locals.user = req.user;
+    res.locals.modules = modules;
     next();
 });
 
 app.use('/', mainControllers);
 app.use('/api', apiControllers);
+
+(function loadModules() {
+    var appsFolder = path.join(process.env.PWD, "modules");
+
+    // TODO: see if there is a way to do this using async methods
+    //       for now, if we use async methods, the module.exports
+    //       happen before we can add our modules to the app
+    var files = fs.readdirSync(appsFolder);
+
+    for (var f=0; f < files.length; f++)
+    {
+        var moduleName = files[f];
+        var moduleDir = path.join(appsFolder, moduleName);
+
+        if (fs.statSync(moduleDir).isDirectory())
+        {
+            var modulePrefix = "/" + moduleName;
+            app.use(modulePrefix + '/api', require('./modules/' + moduleName + '/api'));
+            app.use(modulePrefix + '/static', express.static(path.join(moduleDir, 'static')));
+
+            modules.push(moduleName);
+
+            console.log("Loaded module:", moduleName);
+        }
+    }
+})();
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

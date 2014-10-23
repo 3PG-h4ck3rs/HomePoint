@@ -6,10 +6,10 @@ var ble = new BLE();
 noble.on('stateChange', function(state) {
   if (state === 'poweredOn') {
     noble.startScanning();
-    console.log('noble start scanning');
+    console.log('Start BLE scanning ...');
   } else {
     noble.stopScanning();
-    console.log('noble stop scanning');
+    console.error('BLE failed to start');
   }
 });
 
@@ -21,7 +21,6 @@ noble.on('discover',function(dev){
 
 function BLE()
 {
-	console.log("Instantianting BLE ...");
 	this.devices = [];
 }
 
