@@ -15,7 +15,7 @@ var fs = require("fs");
 
 var app = express();
 
-var modules = [];
+var modulesScripts = [];
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -36,7 +36,7 @@ app.use('/static', express.static(path.join(__dirname, 'static')));
 
 // expose module names to the views
 app.use(function(req,res,next){
-    res.locals.modules = modules;
+    res.locals.modulesScripts = modulesScripts;
     next();
 });
 
@@ -58,11 +58,16 @@ app.use('/api', apiControllers);
 
         if (fs.statSync(moduleDir).isDirectory())
         {
-            var modulePrefix = "/" + moduleName;
+            var moduleInfo = JSON.parse(fs.readFileSync(path.join(moduleDir, "package.json")));
+            var modulePrefix = "/" + (moduleInfo.apiName || moduleName);
+
             app.use(modulePrefix + '/api', require('./modules/' + moduleName + '/api'));
             app.use(modulePrefix + '/static', express.static(path.join(moduleDir, 'static')));
 
-            modules.push(moduleName);
+            moduleInfo.scripts.forEach(function (script) {
+                var script = path.join(modulePrefix, script);
+                modulesScripts.push(script);
+            });
 
             console.log("Loaded module:", moduleName);
         }

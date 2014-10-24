@@ -24,16 +24,7 @@
                         dashboardItems.empty();
 
                         $.each(res.devices, function (index, deviceInfo) {
-                            var device;
-
-                            switch (deviceInfo.type){
-                                case 'toggle':
-                                    device = new ns.ToggleDevice(deviceInfo);
-                                    break;
-                                case 'temp':
-                                    device = new ns.TempDevice(deviceInfo);
-                                    break;
-                            }
+                            var device = new ns.registeredDevice[deviceInfo.type](deviceInfo);
 
                             device.getDOM(function (dom) {
                                 dashboardItems.append(dom);

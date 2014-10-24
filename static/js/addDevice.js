@@ -56,7 +56,7 @@
         modal.modal();
 		
         $.ajax({
-            url: "/api/discover",
+            url: "/api/discover"
         }).success(function (res) {
             devices = res.devices;
 

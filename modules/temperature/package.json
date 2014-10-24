@@ -1,0 +1,6 @@
+{
+    "name": "temperature",
+    "version": "0.0.1",
+    "apiName": "temp",
+    "scripts": ["static/js/device.js"]
+}

@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var ble = require("../../ble");
 
 router.get("/getState/:deviceId", function (req, res) {
     res.send({status:"ok", device: req.params.deviceId, state: "on"});
