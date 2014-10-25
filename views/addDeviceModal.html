@@ -1,0 +1,46 @@
+<div class="modal fade" id="addDeviceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <i class="fa fa-times close" data-dismiss="modal"></i>
+                    Available devices
+                </h4>
+            </div>
+            <div class="modal-body" id="deviceList">
+
+                <div class="alert alert-danger" role="alert" id="modalError">
+                    <button type="button" class="close" data-dismiss="alert">
+                        <i class="fa fa-times"></i>
+                    </button>
+                    <span></span>
+                </div>
+
+                {{ loading("Scanning for devices ...") }}
+
+                <div class="emptyMessage">
+                    No devices detected nearby
+                </div>
+
+                <table class="table table-condensed table-striped">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>Name</th>
+                        <th>UID</th>
+                        <th>Type</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button"
+                        class="btn btn-primary"
+                        id="addDeviceBtn"
+                        disabled="disabled"><i class="fa fa-plus"></i> Add</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -6,6 +6,8 @@ var ble = require("../ble");
 
 var fs = require('fs');
 
+var EventSource = require("../event-source");
+
 var mockDevices = [
     {
         "manufacturer": "Pible",
@@ -29,9 +31,23 @@ var mockDevices = [
 var DEVICES_FILE = "devices/added.json";
 var SIMULATED_DELAY = 1000;
 
-router.get("/discover", function (req, res) {	
-
+router.get("/discover", function (req, res) {
     res.send({status: "ok", devices: ble.getDevices() });
+});
+
+router.get("/discover-event", function (req, res) {
+    var discoverEvent = new EventSource(res);
+
+    function handleDeviceDiscovered(device)
+    {
+        discoverEvent.send("deviceDiscovered", device);
+    }
+
+    ble.on("deviceDiscovered", handleDeviceDiscovered);
+
+    req.once("end", function() {
+        ble.removeListener("deviceDiscovered", handleDeviceDiscovered);
+    });
 });
 
 router.post("/addDevice", function (req, res) {

@@ -74,5 +74,12 @@
 {
     max-height: 300px;
     overflow: auto;
-
 }
+
+    #deviceList .emptyMessage
+    {
+        text-align: center;
+        color: #c0c0c0;
+        font-size: 22px;
+        padding: 22px 0;
+    }

@@ -7,6 +7,7 @@
     var modal = $("#addDeviceModal");
     var modalError = $("#modalError");
     var loadingIndicator = $("#addDeviceModal .searchingIndicator");
+    var emptyMessage = $("#deviceList .emptyMessage");
     var deviceList = $("#deviceList tbody");
     var deviceTable = $("#deviceList table");
     var addDeviceBtn = $("#addDeviceBtn");
@@ -52,6 +53,7 @@
         loadingIndicator.show();
         deviceTable.hide();
         modalError.hide();
+        emptyMessage.hide();
 
         modal.modal();
 		
@@ -60,23 +62,51 @@
         }).success(function (res) {
             devices = res.devices;
 
-            $.get("/static/partials/deviceListRow.html", function (template) {
-                deviceList.empty();
-                $.each(devices, function (index, device) {
-                    var templateInfo =  _.clone(device);
-                    templateInfo.index = index;
-                    deviceList.append(Mustache.render(template, templateInfo));
+            if (res.devices.length > 0)
+            {
+                $.get("/static/partials/deviceListRow.html", function (template) {
+                    $.each(devices, function (index, device) {
+                        var templateInfo =  _.clone(device);
+                        templateInfo.index = index;
+                        deviceList.append(Mustache.render(template, templateInfo));
+                    });
+                    loadingIndicator.hide();
+                    deviceTable.show();
                 });
-
+            }
+            else
+            {
                 loadingIndicator.hide();
-                deviceTable.show();
+                emptyMessage.show();
+            }
+        });
+
+        var newDeviceEvents = new EventSource("/api/discover-event");
+
+        newDeviceEvents.addEventListener("deviceDiscovered", function (event) {
+            var device = JSON.parse(event.data);
+            devices.push(device);
+
+            $.get("/static/partials/deviceListRow.html", function (template) {
+                var templateInfo =  _.clone(device);
+
+                var index = deviceList.find("tr").length;
+
+                templateInfo.index = index;
+                deviceList.append(Mustache.render(template, templateInfo));
+
+                if (index === 0)
+                {
+                    emptyMessage.hide();
+                    deviceTable.show();
+                }
             });
+
         });
     }
 
     $(document).on("change", "[name='selectedDevice']", handleDeviceListChange);
     addDeviceBtn.click(handleAddDevice);
-    $("#refreshDeviceBtn").click(showDeviceList);
 
     $(".addDeviceBtn").click(showDeviceList);
 

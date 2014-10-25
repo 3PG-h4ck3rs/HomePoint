@@ -1,6 +1,8 @@
 var noble = require("noble");
 var _ = require("lodash");
 
+require("util").inherits(BLE, require("events").EventEmitter);
+
 var ble = new BLE();
 
 noble.on('stateChange', function(state) {
@@ -15,7 +17,11 @@ noble.on('stateChange', function(state) {
 
 noble.on('discover',function(dev){
 	console.log("DISCOVERED:", dev.uuid," - ", dev.advertisement.localName);	
-	ble.devices.push(dev);		
+	ble.devices.push(dev);
+    ble.emit("deviceDiscovered", {
+        uuid: dev.uuid,
+        name: dev.advertisement.localName
+    });
 });
 
 
@@ -31,7 +37,7 @@ BLE.prototype.getDevices = function(){
 	{
 		devices.push({
 			uuid: this.devices[f].uuid,
-			name: this.devices[f].advertisement.localName,
+			name: this.devices[f].advertisement.localName
 		});
 	}
 
