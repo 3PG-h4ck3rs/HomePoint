@@ -6,18 +6,18 @@ require("util").inherits(BLE, require("events").EventEmitter);
 var ble = new BLE();
 
 noble.on('stateChange', function(state) {
-  if (state === 'poweredOn') {
-    noble.startScanning();
-    console.log('Start BLE scanning ...');
-  } else {
-    noble.stopScanning();
-    console.error('BLE failed to start');
-  }
+    if (state === 'poweredOn') {
+        noble.startScanning();
+        console.log('Start BLE scanning ...');
+    } else {
+        noble.stopScanning();
+        console.error('BLE failed to start');
+    }
 });
 
 noble.on('discover',function(dev){
-	console.log("DISCOVERED:", dev.uuid," - ", dev.advertisement.localName);	
-	ble.devices.push(dev);
+    console.log("DISCOVERED:", dev.uuid," - ", dev.advertisement.localName);
+    ble.devices.push(dev);
     ble.emit("deviceDiscovered", {
         uuid: dev.uuid,
         name: dev.advertisement.localName
@@ -27,21 +27,21 @@ noble.on('discover',function(dev){
 
 function BLE()
 {
-	this.devices = [];
+    this.devices = [];
 }
 
 BLE.prototype.getDevices = function(){
-	var devices = [];
+    var devices = [];
 
-	for (var f=0; f < this.devices.length; f++)
-	{
-		devices.push({
-			uuid: this.devices[f].uuid,
-			name: this.devices[f].advertisement.localName
-		});
-	}
+    for (var f=0; f < this.devices.length; f++)
+    {
+        devices.push({
+            uuid: this.devices[f].uuid,
+            name: this.devices[f].advertisement.localName
+        });
+    }
 
-	return devices;
+    return devices;
 };
 
 BLE.prototype.sendCommand = function(uuid, service, characteristic, data, callback){
@@ -50,22 +50,28 @@ BLE.prototype.sendCommand = function(uuid, service, characteristic, data, callba
 		return device.uuid == uuid;
 	});
 
-    dev.connect(function(error){
-		// Discover the service
-		dev.discoverServices([service], function(error, services) {
-			var testService = services[0];
+    if (!dev)
+    {
+        callback.call(this, {message: "Could not find device to send command to"});
+        return;
+    }
 
-			// discover the characteristic
-			testService.discoverCharacteristics([characteristic], function(error, characteristics) {
-				var testCharacteristic = characteristics[0];
+    dev.connect(function(error){
+        // Discover the service
+        dev.discoverServices([service], function(error, services) {
+            var testService = services[0];
+
+            // discover the characteristic
+            testService.discoverCharacteristics([characteristic], function(error, characteristics) {
+                var testCharacteristic = characteristics[0];
 
                 if (data)
-				    testCharacteristic.write(data, false, callback);
+                    testCharacteristic.write(data, false, callback);
                 else
                     testCharacteristic.read(callback);
-			});
-		});
+            });
+        });
 	});
-}
+};
 
 module.exports = ble;

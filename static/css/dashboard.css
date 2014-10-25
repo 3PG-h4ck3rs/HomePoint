@@ -34,7 +34,17 @@
         height: 200px;
         float: left;
         margin-right: 20px;
+        position: relative;
     }
+
+        #dashboard .device .deviceType
+        {
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            right: 0;
+            color: silver;
+        }
 
         #dashboard .device .deviceName .fa
         {
@@ -46,16 +56,28 @@
             color: #b20000;
         }
 
-        #dashboard .device .icon
-        {
-            font-size: 70px;
-            color: #dfdfdf;
-        }
-
         #dashboard .device.toggleDevice .panel-body
         {
             text-align: center;
         }
+
+        #dashboard .device.toggleDevice .btn-group
+        {
+            margin-top: 25px;
+        }
+
+        #dashboard .device .tempIndicator
+        {
+            font-size: 40px;
+            color: gray;
+            padding-top: 30px;
+        }
+
+            #dashboard .device.toggleDevice .btn-group .btn
+            {
+                font-size: 20px;
+                padding: 17px 22px;
+            }
 
 #emptyDashboard
 {
