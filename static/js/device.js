@@ -23,7 +23,7 @@
         },
 
         getDOM: function (callback) {
-            $.get("/static/partials/dashboardItem_" + this.deviceInfo.type + ".html", $.proxy(function (template) {
+            $.get("/" + this.deviceInfo.type + "/static/partials/dashboardItem.html", $.proxy(function (template) {
                 this.dom = $(Mustache.render(template, this.deviceInfo));
 
                 this.dom.find(".deviceName .fa-times").click($.proxy(this.remove, this));

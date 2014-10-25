@@ -43,25 +43,25 @@ app.use(function(req,res,next){
 app.use('/', mainControllers);
 app.use('/api', apiControllers);
 
-(function loadModules() {
-    var appsFolder = path.join(process.env.PWD, "modules");
+(function loadDevices() {
+    var devicesFolder = path.join(process.env.PWD, "devices");
 
     // TODO: see if there is a way to do this using async methods
     //       for now, if we use async methods, the module.exports
     //       happen before we can add our modules to the app
-    var files = fs.readdirSync(appsFolder);
+    var files = fs.readdirSync(devicesFolder);
 
     for (var f=0; f < files.length; f++)
     {
         var moduleName = files[f];
-        var moduleDir = path.join(appsFolder, moduleName);
+        var moduleDir = path.join(devicesFolder, moduleName);
 
         if (fs.statSync(moduleDir).isDirectory())
         {
             var moduleInfo = JSON.parse(fs.readFileSync(path.join(moduleDir, "package.json")));
             var modulePrefix = "/" + (moduleInfo.apiName || moduleName);
 
-            app.use(modulePrefix + '/api', require('./modules/' + moduleName + '/api'));
+            app.use(modulePrefix + '/api', require('./devices/' + moduleName + '/api'));
             app.use(modulePrefix + '/static', express.static(path.join(moduleDir, 'static')));
 
             moduleInfo.scripts.forEach(function (script) {

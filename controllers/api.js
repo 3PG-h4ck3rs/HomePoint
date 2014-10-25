@@ -26,7 +26,7 @@ var mockDevices = [
     }
 ];
 
-var DEVICES_FILE = "devices.json";
+var DEVICES_FILE = "devices/added.json";
 var SIMULATED_DELAY = 1000;
 
 router.get("/discover", function (req, res) {	
