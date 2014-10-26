@@ -1,0 +1,18 @@
+#deviceList
+{
+    display: none;
+}
+
+#addDeviceModal .modal-body
+{
+    max-height: 300px;
+    overflow: auto;
+}
+
+#addDeviceModal .emptyMessage
+{
+    text-align: center;
+    color: #c0c0c0;
+    font-size: 22px;
+    padding: 22px 0;
+}

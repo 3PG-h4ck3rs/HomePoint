@@ -1,31 +1,7 @@
-.clockpicker-popover
-{
-    z-index: 1060;
-}
-
-.modal-header
-{
-    color: #31708f;
-    background-color: #d9edf7;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-}
-
-.searchingIndicator
-{
-    text-align: center;
-    padding: 22px;
-}
-
-    .searchingIndicator .loadingMessage
-    {
-        color: silver;
-        margin-top: 10px;
-    }
-
 #dashboard
 {
     display: none;
+    padding: 15px 0;
 }
 
     #dashboard .device
@@ -33,7 +9,7 @@
         width: 200px;
         height: 200px;
         float: left;
-        margin-right: 20px;
+        margin: 10px;
         position: relative;
     }
 
@@ -78,30 +54,3 @@
                 font-size: 20px;
                 padding: 17px 22px;
             }
-
-#emptyDashboard
-{
-    margin-top: 100px;
-    text-align: center;
-    display: none;
-}
-
-    #emptyDashboard h1
-    {
-        color: silver;
-        padding-bottom: 20px;
-    }
-
-#deviceList
-{
-    max-height: 300px;
-    overflow: auto;
-}
-
-    #deviceList .emptyMessage
-    {
-        text-align: center;
-        color: #c0c0c0;
-        font-size: 22px;
-        padding: 22px 0;
-    }

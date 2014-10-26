@@ -1,0 +1,38 @@
+.clockpicker-popover
+{
+    z-index: 1060;
+}
+
+.modal-header
+{
+    color: #31708f;
+    background-color: #d9edf7;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.searchingIndicator
+{
+    text-align: center;
+    padding: 22px;
+    display: none;
+}
+
+    .searchingIndicator .loadingMessage
+    {
+        color: silver;
+        margin-top: 10px;
+    }
+
+.bigMessage
+{
+    margin-top: 100px;
+    text-align: center;
+    display: none;
+}
+
+    .bigMessage h1
+    {
+        color: silver;
+        padding-bottom: 20px;
+    }

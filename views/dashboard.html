@@ -27,28 +27,19 @@
 
 {% block content %}
     <div id="dashboardLoading">
-        {{ loading("Retriving device list ...") }}
+        {{ loading("Retrieving device list ...") }}
     </div>
 
     <div id="dashboard">
-        <div class="page-header">
-            <button class="btn btn-primary addDeviceBtn">
-                <i class="fa fa-plus"></i> Add device
-            </button>
-        </div>
-
-
         <div id="dashboardItems">
 
         </div>
     </div>
 
-    <div id="emptyDashboard">
-        <h1>There are no devices</h1>
-        <button class="btn btn-primary btn-lg addDeviceBtn">
-            <i class="fa fa-plus"></i> Add device
-        </button>
+    <div id="emptyDashboard" class="bigMessage">
+        <h1>No devices added</h1>
+        <a href="/admin/devices" class="btn btn-primary btn-lg addDeviceBtn">
+            <i class="fa fa-cogs"></i> Visit Admin
+        </a>
     </div>
-
-    {% include "addDeviceModal.html" %}
 {% endblock %}

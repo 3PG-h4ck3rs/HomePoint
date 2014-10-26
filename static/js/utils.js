@@ -6,6 +6,6 @@ $.prototype.enable = function () {
 
 $.prototype.disable = function () {
     $.each(this, function (index, el) {
-        $(el).removeAttr('disabled');
+        $(el).attr("disabled", 'disabled');
     });
 }

@@ -7,9 +7,9 @@
     var modal = $("#addDeviceModal");
     var modalError = $("#modalError");
     var loadingIndicator = $("#addDeviceModal .searchingIndicator");
-    var emptyMessage = $("#deviceList .emptyMessage");
-    var deviceList = $("#deviceList tbody");
-    var deviceTable = $("#deviceList table");
+    var emptyMessage = $("#addDeviceModal .emptyMessage");
+    var deviceList = $("#addDeviceModal tbody");
+    var deviceTable = $("#addDeviceModal table");
     var addDeviceBtn = $("#addDeviceBtn");
 
     function handleDeviceListChange()
@@ -54,6 +54,7 @@
         deviceTable.hide();
         modalError.hide();
         emptyMessage.hide();
+        addDeviceBtn.disable();
 
         modal.modal();
 		
@@ -61,6 +62,8 @@
             url: "/api/discover"
         }).success(function (res) {
             devices = res.devices;
+
+            deviceList.empty();
 
             if (res.devices.length > 0)
             {

@@ -1,0 +1,59 @@
+{% extends "admin/base.html" %}
+
+{% macro loading(message) %}
+<div class="searchingIndicator">
+    <img src="/static/img/searching.gif" alt="Searching" />
+    <div class="loadingMessage">{{message}}</div>
+</div>
+{% endmacro %}
+
+{% block styles %}
+<link rel="stylesheet" href="/static/css/devices.css" />
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/libs/mustache.js"></script>
+<script src="/static/js/device.js"></script>
+<script src="/static/js/admin/addDevice.js"></script>
+<script src="/static/js/admin/devices.js"></script>
+{% for script in modulesScripts %}
+<script src="{{script}}"></script>
+{% endfor %}
+{% endblock %}
+
+{% block content %}
+    <div id="devices">
+        <div id="deviceLoading">
+            {{ loading("Retrieving device list ...") }}
+        </div>
+
+        <div id="deviceList">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>UUID</th>
+                    <th>Name</th>
+                    <th>Service</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+
+            <button class="btn btn-primary addDeviceBtn">
+                <i class="fa fa-plus"></i> Add device
+            </button>
+        </div>
+
+
+        <div id="emptylist" class="bigMessage">
+            <h1>No devices added</h1>
+            <button class="btn btn-primary btn-lg addDeviceBtn">
+                <i class="fa fa-plus"></i> Add device
+            </button>
+        </div>
+    </div>
+
+    {% include "admin/addDeviceModal.html" %}
+{% endblock %}

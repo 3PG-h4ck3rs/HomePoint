@@ -9,6 +9,7 @@ var bodyParser = require('body-parser');
 var nunjucks  = require('nunjucks');
 
 var mainControllers = require('./controllers/main');
+var adminControllers = require('./controllers/admin');
 var apiControllers = require('./controllers/api');
 
 var fs = require("fs");
@@ -41,6 +42,7 @@ app.use(function(req,res,next){
 });
 
 app.use('/', mainControllers);
+app.use('/admin', adminControllers);
 app.use('/api', apiControllers);
 
 (function loadDevices() {
