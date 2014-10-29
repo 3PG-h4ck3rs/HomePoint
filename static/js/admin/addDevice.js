@@ -48,7 +48,7 @@
         })
     }
 
-    function showDeviceList()
+    function showAddDeviceModal()
     {
         loadingIndicator.show();
         deviceTable.hide();
@@ -111,6 +111,6 @@
     $(document).on("change", "[name='selectedDevice']", handleDeviceListChange);
     addDeviceBtn.click(handleAddDevice);
 
-    $(".addDeviceBtn").click(showDeviceList);
+    $(".showDevicesBtn").click(showAddDeviceModal);
 
 })(io.pible);
