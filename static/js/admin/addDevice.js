@@ -67,10 +67,13 @@
 
             if (res.devices.length > 0)
             {
-                $.get("/static/partials/deviceListRow.html", function (template) {
+                $.get("/static/partials/admin/modalDeviceListRow.html", function (template) {
                     $.each(devices, function (index, device) {
                         var templateInfo =  _.clone(device);
                         templateInfo.index = index;
+
+                        console.log("Found device:", templateInfo);
+
                         deviceList.append(Mustache.render(template, templateInfo));
                     });
                     loadingIndicator.hide();
@@ -90,12 +93,15 @@
             var device = JSON.parse(event.data);
             devices.push(device);
 
-            $.get("/static/partials/deviceListRow.html", function (template) {
+            $.get("/static/partials/admin/modalDeviceListRow.html", function (template) {
                 var templateInfo =  _.clone(device);
 
                 var index = deviceList.find("tr").length;
 
                 templateInfo.index = index;
+
+                console.log("Found device:", templateInfo);
+
                 deviceList.append(Mustache.render(template, templateInfo));
 
                 if (index === 0)

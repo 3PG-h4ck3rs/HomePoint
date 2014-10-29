@@ -16,29 +16,90 @@ noble.on('stateChange', function(state) {
 });
 
 noble.on('discover',function(dev){
-    console.log("DISCOVERED:", dev.uuid," - ", dev.advertisement.localName);
-    ble.devices.push(dev);
-    ble.emit("deviceDiscovered", {
-        uuid: dev.uuid,
-        name: dev.advertisement.localName
+    dev.connect(function(error){
+        // Discover the service
+        dev.discoverServices([], function(error, services) {
+            dev.services = services;
+
+            var servicesProcessed = 0;
+
+            for (var f = 0; f < dev.services.length; f++)
+            {
+                (function (f) {
+                    var service = dev.services[f];
+
+                    service.discoverCharacteristics([], function(error, characteristics){
+                        dev.services[f].chars = characteristics;
+
+                        servicesProcessed++;
+
+                        if (servicesProcessed == dev.services.length)
+                        {
+                            ble.addDevice(dev);
+                            console.log("DISCOVERED:", dev.uuid," - ", dev.advertisement.localName);
+                        }
+                    });
+                })(f);
+            }
+
+        });
     });
+
 });
 
+
+function simplifyDevice(device)
+{
+    var simpleDevice = {
+        uuid: device.uuid,
+        name: device.advertisement.localName,
+        services: []
+    };
+
+    for (var f = 0; f < device.services.length; f++)
+    {
+        var service = device.services[f];
+
+        var simpleService = {
+            uuid: service.uuid,
+            name: service.name,
+            type: service.type,
+            chars: []
+        };
+
+        for (var g = 0; g < service.chars.length; g++)
+        {
+            var char = service.chars[g];
+
+            simpleService.chars.push({
+                uuid: char.uuid,
+                name: char.name,
+                type: char.type
+            });
+        }
+
+        simpleDevice.services.push(simpleService);
+    }
+
+    return simpleDevice;
+}
 
 function BLE()
 {
     this.devices = [];
 }
 
+BLE.prototype.addDevice = function (device) {
+    this.devices.push(device);
+    this.emit("deviceDiscovered", simplifyDevice(device));
+};
+
 BLE.prototype.getDevices = function(){
     var devices = [];
 
     for (var f=0; f < this.devices.length; f++)
     {
-        devices.push({
-            uuid: this.devices[f].uuid,
-            name: this.devices[f].advertisement.localName
-        });
+        devices.push(simplifyDevice(this.devices[f]));
     }
 
     return devices;
