@@ -62,8 +62,8 @@ function simplifyDevice(device)
 
         var simpleService = {
             uuid: service.uuid,
-            name: service.name,
-            type: service.type,
+            name: service.name || "N/A",
+            type: service.type || "N/A",
             chars: []
         };
 
@@ -73,8 +73,8 @@ function simplifyDevice(device)
 
             simpleService.chars.push({
                 uuid: char.uuid,
-                name: char.name,
-                type: char.type
+                name: char.name || "N/A",
+                type: char.type || "N/A"
             });
         }
 
@@ -105,7 +105,7 @@ BLE.prototype.getDevices = function(){
     return devices;
 };
 
-BLE.prototype.sendCommand = function(uuid, service, characteristic, data, callback){
+BLE.prototype.sendCommand = function(uuid, serviceUUID, charUUID, data, callback){
 	
 	var dev = _.find(this.devices, function(device){
 		return device.uuid == uuid;
@@ -117,22 +117,18 @@ BLE.prototype.sendCommand = function(uuid, service, characteristic, data, callba
         return;
     }
 
-    dev.connect(function(error){
-        // Discover the service
-        dev.discoverServices([service], function(error, services) {
-            var testService = services[0];
+    var service = _.find(dev.services, function (service) {
+        return service.uuid == serviceUUID;
+    });
 
-            // discover the characteristic
-            testService.discoverCharacteristics([characteristic], function(error, characteristics) {
-                var testCharacteristic = characteristics[0];
+    var char = _.find(service.chars, function (charactheristic) {
+        return charactheristic.uuid == charUUID;
+    });
 
-                if (data)
-                    testCharacteristic.write(data, false, callback);
-                else
-                    testCharacteristic.read(callback);
-            });
-        });
-	});
+    if (data)
+        char.write(data, false, callback)
+    else
+        char.read(callback)
 };
 
 module.exports = ble;

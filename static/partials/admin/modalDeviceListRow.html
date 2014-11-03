@@ -4,9 +4,8 @@
     <td>{{uuid}}</td>
     <td>
         <select name="deviceType_{{index}}" id="deviceType_{{index}}">
-            {{#services}}
-                <option value="{{uuid}}">{{uuid}} - {{name}}</option>
-            {{/services}}
+            <option value="toggle">Toggle</option>
+            <option value="temp">Temp. sensor</option>
         </select>
     </td>
 </tr>
