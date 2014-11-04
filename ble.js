@@ -16,32 +16,41 @@ noble.on('stateChange', function(state) {
 });
 
 noble.on('discover',function(dev){
+    process.stdout.write("Processing " + dev.advertisement.localName + "(" + dev.uuid + ") .");
     dev.connect(function(error){
-        // Discover the service
+        process.stdout.write(".");
         dev.discoverServices([], function(error, services) {
-            dev.services = services;
+            process.stdout.write(".");
+            dev.services = [];
 
             var servicesProcessed = 0;
 
-            for (var f = 0; f < dev.services.length; f++)
+            for (var f = 0; f < services.length; f++)
             {
-                (function (f) {
-                    var service = dev.services[f];
+                var service = services[f];
 
+                (function (service) {
                     service.discoverCharacteristics([], function(error, characteristics){
-                        dev.services[f].chars = characteristics;
+                        service.chars = [];
 
-                        servicesProcessed++;
+                        for (var g = 0; g < characteristics.length; g++)
+                        {
+                            var char = characteristics[g];
+                            service.chars[char.uuid] = char;
+                        }
 
-                        if (servicesProcessed == dev.services.length)
+                        dev.services[service.uuid] = service;
+
+                        servicesProcessed ++;
+
+                        if (servicesProcessed == services.length)
                         {
                             ble.addDevice(dev);
-                            console.log("DISCOVERED:", dev.uuid," - ", dev.advertisement.localName);
+                            process.stdout.write(" done\n");
                         }
                     });
-                })(f);
+                })(service);
             }
-
         });
     });
 
@@ -56,9 +65,9 @@ function simplifyDevice(device)
         services: []
     };
 
-    for (var f = 0; f < device.services.length; f++)
+    for (var serviceUUID in device.services)
     {
-        var service = device.services[f];
+        var service = device.services[serviceUUID];
 
         var simpleService = {
             uuid: service.uuid,
@@ -67,9 +76,9 @@ function simplifyDevice(device)
             chars: []
         };
 
-        for (var g = 0; g < service.chars.length; g++)
+        for (var charUUID in service.chars)
         {
-            var char = service.chars[g];
+            var char = service.chars[charUUID];
 
             simpleService.chars.push({
                 uuid: char.uuid,
@@ -90,7 +99,7 @@ function BLE()
 }
 
 BLE.prototype.addDevice = function (device) {
-    this.devices.push(device);
+    this.devices[device.uuid] = device;
     this.emit("deviceDiscovered", simplifyDevice(device));
 };
 
@@ -98,32 +107,36 @@ BLE.prototype.getDevices = function(){
     var devices = [];
 
     for (var f=0; f < this.devices.length; f++)
-    {
         devices.push(simplifyDevice(this.devices[f]));
-    }
 
     return devices;
 };
 
-BLE.prototype.sendCommand = function(uuid, serviceUUID, charUUID, data, callback){
+BLE.prototype.sendCommand = function(deviceUUID, serviceUUID, charUUID, data, callback){
 	
-	var dev = _.find(this.devices, function(device){
-		return device.uuid == uuid;
-	});
+	var dev = this.devices[deviceUUID];
 
     if (!dev)
     {
-        callback.call(this, {message: "Could not find device to send command to"});
+        callback.call(this, {message: "Send command could not find device"});
         return;
     }
 
-    var service = _.find(dev.services, function (service) {
-        return service.uuid == serviceUUID;
-    });
+    var service = dev.services[serviceUUID];
 
-    var char = _.find(service.chars, function (charactheristic) {
-        return charactheristic.uuid == charUUID;
-    });
+    if (!service)
+    {
+        callback.call(this, {message: "Send command could not find service"});
+        return;
+    }
+
+    var char = service.chars[charUUID];
+
+    if (!char)
+    {
+        callback.call(this, {message: "Send command could not characteristic service"});
+        return;
+    }
 
     if (data)
         char.write(data, false, callback)
