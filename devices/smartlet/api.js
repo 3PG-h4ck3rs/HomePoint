@@ -13,7 +13,7 @@ router.post("/setState/:deviceId/:state", function (req, res) {
         if (!err)
             res.send({status: "ok", state: req.params.state});
         else
-            res.status(500).send({status: "error", message: "Bluetooth error"});
+            res.status(500).send({status: "error", message: err.message});
     });
 });
 

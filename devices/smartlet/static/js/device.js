@@ -14,7 +14,7 @@
             var state = $("[name=state]:checked").val();
 
             $.ajax({
-                url: "/toggle/api/setState/" + this.deviceInfo.uuid + "/" + state,
+                url: "/smartlet/api/setState/" + this.deviceInfo.uuid + "/" + state,
                 type: "post",
                 success: $.proxy(function (res) {
                     if (state == "on")
@@ -46,5 +46,5 @@
     });
 
 
-    ns.registeredDevice["toggle"] = ToggleDevice;
+    ns.registeredDevice["smartlet"] = ToggleDevice;
 }(io.pible));
