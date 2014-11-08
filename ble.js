@@ -1,5 +1,4 @@
 var noble = require("noble");
-var _ = require("lodash");
 
 require("util").inherits(BLE, require("events").EventEmitter);
 
@@ -16,21 +15,19 @@ noble.on('stateChange', function(state) {
 });
 
 noble.on('discover',function(dev){
-    process.stdout.write("Processing " + dev.advertisement.localName + "(" + dev.uuid + ") .");
-    dev.connect(function(error){
-        process.stdout.write(".");
-        dev.discoverServices([], function(error, services) {
-            process.stdout.write(".");
-            dev.services = [];
+    process.stdout.write("Connecting " + dev.advertisement.localName + " [" + dev.uuid + "] ... ");
+    dev.connect(function(err){
+        if (!err)
+        {
+            dev.discoverAllServicesAndCharacteristics(function(err, services, characteristics) {
+                if (!err)
+                {
+                    dev.services = [];
 
-            var servicesProcessed = 0;
+                    for (var f = 0; f < services.length; f++)
+                    {
+                        var service = services[f];
 
-            for (var f = 0; f < services.length; f++)
-            {
-                var service = services[f];
-
-                (function (service) {
-                    service.discoverCharacteristics([], function(error, characteristics){
                         service.chars = [];
 
                         for (var g = 0; g < characteristics.length; g++)
@@ -40,18 +37,22 @@ noble.on('discover',function(dev){
                         }
 
                         dev.services[service.uuid] = service;
+                    }
 
-                        servicesProcessed ++;
+                    ble.addDevice(dev);
+                    process.stdout.write("done\n");
 
-                        if (servicesProcessed == services.length)
-                        {
-                            ble.addDevice(dev);
-                            process.stdout.write(" done\n");
-                        }
-                    });
-                })(service);
-            }
-        });
+                }
+                else
+                {
+                    console.error("Discovery failed for device", dev.uuid);
+                }
+            });
+        }
+        else
+        {
+            console.error("Device connection failed for device", dev.uuid);
+        }
     });
 
 });
@@ -71,8 +72,8 @@ function simplifyDevice(device)
 
         var simpleService = {
             uuid: service.uuid,
-            name: service.name || "N/A",
-            type: service.type || "N/A",
+            name: service.name,
+            type: service.type,
             chars: []
         };
 
@@ -82,8 +83,8 @@ function simplifyDevice(device)
 
             simpleService.chars.push({
                 uuid: char.uuid,
-                name: char.name || "N/A",
-                type: char.type || "N/A"
+                name: char.name,
+                type: char.type
             });
         }
 
@@ -107,7 +108,9 @@ BLE.prototype.getDevices = function(){
     var devices = [];
 
     for (var f=0; f < this.devices.length; f++)
+    {
         devices.push(simplifyDevice(this.devices[f]));
+    }
 
     return devices;
 };
@@ -139,9 +142,13 @@ BLE.prototype.sendCommand = function(deviceUUID, serviceUUID, charUUID, data, ca
     }
 
     if (data)
-        char.write(data, false, callback)
+    {
+        char.write(data, false, callback);
+    }
     else
-        char.read(callback)
+    {
+        char.read(callback);
+    }
 };
 
 module.exports = ble;
