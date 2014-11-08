@@ -1,4 +1,4 @@
-(function(ns, undefined) {
+(function(ns) {
     "use strict";
 
     function ToggleDevice(deviceInfo)
@@ -16,8 +16,8 @@
             $.ajax({
                 url: "/smartlet/api/setState/" + this.deviceInfo.uuid + "/" + state,
                 type: "post",
-                success: $.proxy(function (res) {
-                    if (state == "on")
+                success: $.proxy(function () {
+                    if (state === "on")
                     {
                         this.dom.find(".onBtn").removeClass("btn-default").addClass("btn-primary");
                         this.dom.find(".offBtn").removeClass("btn-danger").addClass("btn-default");
@@ -45,6 +45,5 @@
         }
     });
 
-
-    ns.registeredDevice["smartlet"] = ToggleDevice;
+    ns.registeredDevice.smartlet = ToggleDevice;
 }(io.pible));

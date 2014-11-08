@@ -1,4 +1,4 @@
-(function(ns, undefined) {
+(function(ns) {
     "use strict";
 
 
@@ -18,10 +18,10 @@
                 success: $.proxy(function(res){
                     this.dom.find(".temp").html(res.temp);
                 }, this)
-            })
+            });
         }
     });
 
 
-    ns.registeredDevice["temp"] = TempDevice;
+    ns.registeredDevice.temp = TempDevice;
 }(io.pible));

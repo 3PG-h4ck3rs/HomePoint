@@ -1,10 +1,11 @@
-(function(ns, undefined) {
+(function(ns) {
     "use strict";
 
     var deviceList = $("#deviceList");
-    var deviceListItems = $("#deviceList tbody");
-    var loadingIndicator = $("#devices .searchingIndicator");
-    var emptyListWidget = $("#devices #emptylist");
+    var deviceListItems = deviceList.find("tbody");
+    var devicesWrap = $("#devices");
+    var loadingIndicator = devicesWrap.find(".searchingIndicator");
+    var emptyListWidget = devicesWrap.find("#emptylist");
 
     var devices = [];
 

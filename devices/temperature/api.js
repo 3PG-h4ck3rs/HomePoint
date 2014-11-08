@@ -10,7 +10,9 @@ router.get("/getTemperature/:deviceId", function (req, res) {
             res.send({status: "ok", temp: temp / 10});
         }
         else
+        {
             res.status(500).send({status: "error", message: "Bluetooth error"});
+        }
     });
 });
 

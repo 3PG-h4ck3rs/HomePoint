@@ -1,9 +1,9 @@
-(function(ns, undefined) {
+(function(ns) {
     "use strict";
 
     var dashboard = $("#dashboard");
-    var dashboardItems = $("#dashboard #dashboardItems");
-    var loadingIndicator = $("#dashboardLoading .searchingIndicator");
+    var dashboardItems = dashboard.find("#dashboardItems");
+    var loadingIndicator = $("#dashboardLoading").find(".searchingIndicator");
     var emptyDashboardWidget = $("#emptyDashboard");
 
     var devices = [];
@@ -18,7 +18,7 @@
                     emptyDashboardWidget.hide();
                     dashboard.show();
 
-                    if (res.devices.length != devices.length)
+                    if (res.devices.length !== devices.length)
                     {
                         devices = _.clone(res.devices);
                         dashboardItems.empty();

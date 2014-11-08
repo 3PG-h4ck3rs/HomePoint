@@ -1,4 +1,4 @@
-(function (ns, undefined) {
+(function (ns) {
     "use strict";
 
     var selectedDevice;
@@ -6,10 +6,10 @@
 
     var modal = $("#addDeviceModal");
     var modalError = $("#modalError");
-    var loadingIndicator = $("#addDeviceModal .searchingIndicator");
-    var emptyMessage = $("#addDeviceModal .emptyMessage");
-    var deviceList = $("#addDeviceModal tbody");
-    var deviceTable = $("#addDeviceModal table");
+    var loadingIndicator = modal.find(".searchingIndicator");
+    var emptyMessage = modal.find(".emptyMessage");
+    var deviceList = modal.find("tbody");
+    var deviceTable = modal.find("table");
     var addDeviceBtn = $("#addDeviceBtn");
 
     function handleDeviceListChange()
@@ -35,17 +35,21 @@
             type: "post",
             contentType: "application/json",
             data: JSON.stringify(selectedDevice),
-            success: function (res) {
+            success: function () {
                 ns.updateDeviceList();
                 modal.modal('hide');
             },
             error: function (res) {
                 if (res.responseJSON.messsage)
+                {
                     showError(res.responseJSON.messsage);
+                }
                 else
+                {
                     showError("Unknown server error");
+                }
             }
-        })
+        });
     }
 
     function showAddDeviceModal()

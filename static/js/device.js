@@ -1,4 +1,4 @@
-(function(ns, undefined) {
+(function(ns) {
     "use strict";
 
     function Device(deviceInfo) {
