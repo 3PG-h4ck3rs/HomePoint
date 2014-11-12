@@ -45,7 +45,7 @@ app.use("/admin", adminControllers);
 app.use("/api", apiControllers);
 
 (function loadDevices() {
-    var devicesFolder = path.join(process.env.PWD, "devices");
+    var devicesFolder = "devices";
 
     // TODO: see if there is a way to do this using async methods
     //       for now, if we use async methods, the module.exports
