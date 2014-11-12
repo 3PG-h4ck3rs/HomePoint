@@ -12,7 +12,11 @@ First we install the USB development packages and bluez:
 
     ./bin/install_bluez.sh
 
-After the Pi reboots, to check if bluez installation succeeded, you can run:
+After the Pi reboots, enable the device using the following command:
+
+    sudo /opt/bluetooth/bluez-5.23/tools/hciconfig hci0 up
+
+To check if bluez installation succeeded, and the device is enabled, you can run:
 
     ./bin/ble_status.sh
 
