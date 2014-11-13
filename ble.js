@@ -107,9 +107,9 @@ BLE.prototype.addDevice = function (device) {
 BLE.prototype.getDevices = function(){
     var devices = [];
 
-    for (var f=0; f < this.devices.length; f++)
+    for (var deviceUUID in this.devices)
     {
-        devices.push(simplifyDevice(this.devices[f]));
+        devices.push(simplifyDevice(this.devices[deviceUUID]));
     }
 
     return devices;
