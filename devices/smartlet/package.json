@@ -1,5 +1,4 @@
 {
     "name": "toggle",
-    "version": "0.0.1",
-    "scripts": ["static/js/device.js"]
+    "version": "0.0.1"
 }

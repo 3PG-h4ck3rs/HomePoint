@@ -1,0 +1,9 @@
+[
+    {
+        "name": "Priza TV",
+        "type": "bool-widget",
+        "boolIn": {
+            "type": "smartlet"
+        }
+    }
+]
