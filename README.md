@@ -1,6 +1,6 @@
 # PiBLE server
 
-Tested on node v0.10.2
+Developed on node v0.10.2
 
 ## Installation
 

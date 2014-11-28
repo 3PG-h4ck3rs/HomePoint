@@ -1,27 +1,64 @@
 var fs = require("fs");
+var _ = require("lodash");
+
 var MODULES_FILE = "../modules.json";
 
-function Module(moduleInfo)
+var ioMethods = [
+    "in_int",
+    "out_int"
+];
+
+function moduleFactory(moduleInfo, moduleID)
 {
-    var moduleClass = require("../devices/" + moduleInfo.type)
-}
-
-
-function ModuleBuilder()
-{
-    this.modulesCache = {};
-    this.modulesInfo = JSON.parse(fs.readFileSync(MODULES_FILE));
-
-    this.modulesInfo.foarEach(function(moduleInfo){
-
-    });
-}
-
-ModuleBuilder.prototype = {
-    getModule: function(id)
+    if (moduleInfo.module)
     {
-        return this.modulesCache[id] || new Module(id);
+        var ModuleClass = require("./devices/" + moduleInfo.module + "/block");
+        return new ModuleClass(moduleID);
     }
-};
+    else
+    {
+        if (moduleInfo.modules)
+        {
+            // Instantiate all the external modules
+            var modules = {};
+            for (var moduleID in moduleInfo.modules)
+            {
+                modules[moduleID] = moduleFactory(moduleInfo.modules[moduleID], moduleID);
+            }
 
-module.exports = ModuleBuilder;
+            // Create the relations in between modules
+            for (var f = 0; f < moduleInfo.relations.length; f++)
+            {
+                var relation = moduleInfo.relations[f];
+
+                modules[relation.out.module][relation.out.method](function () {
+                    modules[relation.in.module][relation.in.method].apply(modules[relation.in.module], arguments);
+                });
+            }
+
+            // Create the wrapper module
+            var module = {};
+
+            var moduleIOMethods = _.pick(moduleInfo, function (module, method) {
+                return ioMethods.indexOf(method) !== -1;
+            });
+
+            // Create the proxy methods for the wrapper module
+            for (var ioMethod in moduleIOMethods)
+            {
+                (function (method) {
+                    module[method] = function(){
+                        var proxyModule = modules[moduleIOMethods[method]];
+                        proxyModule[method].apply(proxyModule, arguments);
+                    };
+                })(ioMethod);
+            }
+
+            return module;
+        }
+    }
+
+
+}
+
+module.exports = moduleFactory;
