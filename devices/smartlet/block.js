@@ -7,21 +7,26 @@ function SmartletBlock()
 }
 
 SmartletBlock.prototype = {
-    boolInput: function (value) {
+    in_bool: function (value) {
         var state = value ? new Buffer([1]) : new Buffer([0]);
 
-        ble.sendCommand(this.deviceID, '2220', '2222', state, function (err){
-            if (!err){
-                if (this.callback){
+        ble.sendCommand(this.deviceID, '2220', '2222', state, function (err)
+        {
+            if (!err)
+            {
+                if (this.callback)
+                {
                     this.callback.call(this, value);
                 }
             }
         });
     },
 
-    boolOutput: function(callback){
+    out_bool: function(callback)
+    {
         this.callback = callback;
     }
 };
 
 module.exports = SmartletBlock;
+

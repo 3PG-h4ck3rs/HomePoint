@@ -7,10 +7,6 @@ var bodyParser = require("body-parser");
 
 var nunjucks  = require("nunjucks");
 
-var mainControllers = require("./controllers/main");
-var adminControllers = require("./controllers/admin");
-var apiControllers = require("./controllers/api");
-
 var fs = require("fs");
 
 var app = express();
@@ -40,9 +36,10 @@ app.use(function(req,res,next){
     next();
 });
 
-app.use("/", mainControllers);
-app.use("/admin", adminControllers);
-app.use("/api", apiControllers);
+app.use("/",        require("./controllers/main"));
+app.use("/admin",   require("./controllers/admin"));
+app.use("/api",     require("./controllers/api"));
+app.use("/module",  require("./controllers/module"));
 
 
 // catch 404 and forward to error handler

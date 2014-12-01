@@ -1,9 +1,27 @@
 [
     {
-        "name": "Priza TV",
-        "type": "bool-widget",
-        "boolIn": {
-            "type": "smartlet"
-        }
+        "modules": {
+            "m1": {
+                "module": "bool-widget"
+            },
+            "m2": {
+                "module": "smartlet"
+            }
+        },
+        "relations":[
+            {
+                "out": {
+                    "module": "m1",
+                    "method": "out_bool"
+                },
+
+                "in": {
+                    "module": "m2",
+                    "method": "in_bool"
+                }
+            }
+        ],
+
+        "out_ui": "m1"
     }
 ]

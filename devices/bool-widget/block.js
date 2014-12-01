@@ -1,11 +1,18 @@
+var nunjucks = require("nunjucks");
+
 function BoolWidgetBlock()
 {
 
 }
 
 BoolWidgetBlock.prototype = {
-    boolOutput: function (callback) {
+    out_bool: function (callback) {
+        this.out_bool_callback = callback;
+    },
 
+    out_ui: function () {
+        var env = nunjucks.configure(__dirname)
+        return nunjucks.render("static/partials/ui.html");
     }
 };
 

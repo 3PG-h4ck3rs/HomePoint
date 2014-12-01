@@ -3,11 +3,6 @@ var _ = require("lodash");
 
 var MODULES_FILE = "../modules.json";
 
-var ioMethods = [
-    "in_int",
-    "out_int"
-];
-
 function moduleFactory(moduleInfo, moduleID)
 {
     if (moduleInfo.module)
@@ -40,7 +35,7 @@ function moduleFactory(moduleInfo, moduleID)
             var module = {};
 
             var moduleIOMethods = _.pick(moduleInfo, function (module, method) {
-                return ioMethods.indexOf(method) !== -1;
+                return method.match(/^(?:in|out)_\w*$/);
             });
 
             // Create the proxy methods for the wrapper module
