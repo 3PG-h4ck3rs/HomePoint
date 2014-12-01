@@ -21,14 +21,17 @@ function moduleFactory(moduleInfo, moduleID)
                 modules[moduleID] = moduleFactory(moduleInfo.modules[moduleID], moduleID);
             }
 
-            // Create the relations in between modules
-            for (var f = 0; f < moduleInfo.relations.length; f++)
+            if (moduleInfo.relations)
             {
-                var relation = moduleInfo.relations[f];
+                // Create the relations in between modules
+                for (var f = 0; f < moduleInfo.relations.length; f++)
+                {
+                    var relation = moduleInfo.relations[f];
 
-                modules[relation.out.module][relation.out.method](function () {
-                    modules[relation.in.module][relation.in.method].apply(modules[relation.in.module], arguments);
-                });
+                    modules[relation.out.module][relation.out.method](function () {
+                        modules[relation.in.module][relation.in.method].apply(modules[relation.in.module], arguments);
+                    });
+                }
             }
 
             // Create the wrapper module
@@ -44,7 +47,7 @@ function moduleFactory(moduleInfo, moduleID)
                 (function (method) {
                     module[method] = function(){
                         var proxyModule = modules[moduleIOMethods[method]];
-                        proxyModule[method].apply(proxyModule, arguments);
+                        return proxyModule[method].apply(proxyModule, arguments);
                     };
                 })(ioMethod);
             }

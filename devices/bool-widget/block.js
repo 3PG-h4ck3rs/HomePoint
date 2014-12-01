@@ -11,7 +11,7 @@ BoolWidgetBlock.prototype = {
     },
 
     out_ui: function () {
-        var env = nunjucks.configure(__dirname)
+        var env = nunjucks.configure(__dirname);
         return nunjucks.render("static/partials/ui.html");
     }
 };

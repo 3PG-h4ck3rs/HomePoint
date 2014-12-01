@@ -1,3 +1,4 @@
+var nunjucks = require("nunjucks");
 
 // A simple test external module that simply
 // accepts an input and spits it incremented by one
@@ -14,6 +15,11 @@ TestAddModule.prototype = {
 
     out_int: function (callback) {
         this.out_int_callback = callback;
+    },
+
+    out_ui: function (){
+        var env = nunjucks.configure(__dirname);
+        return nunjucks.render("templates/test.html");
     }
 };
 

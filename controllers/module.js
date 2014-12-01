@@ -17,7 +17,6 @@ router.get("/moduleList", function (req, res) {
                 if (modulesInfo[f].out_ui)
                 {
                     var ui = moduleFactory(modulesInfo[f]).out_ui()
-                    console.log(ui);
                     modules.push(ui);
                 }
             }
@@ -26,7 +25,7 @@ router.get("/moduleList", function (req, res) {
         }
         else
         {
-            res.status(500).send({status: "error", messsage: "Can't read modules from list"});
+            res.status(500).send({status: "error", message: "Can't read modules from list"});
         }
     });
 });

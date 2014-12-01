@@ -3,10 +3,10 @@ var moduleFactory = require("../module-builder");
 var addModule = {
     modules: {
         m1: {
-            module: "test-add-module"
+            module: "test-module"
         },
         m2: {
-            module: "test-add-module"
+            module: "test-module"
         }
     },
     relations:[
@@ -48,6 +48,16 @@ var composeDefinedModule = {
     out_int: "m2"
 };
 
+var templateModule = {
+    modules: {
+        m1: {
+            module: "test-module"
+        }
+    },
+    out_ui: "m1"
+};
+
+
 describe("module factory", function () {
     it("should chain external modules", function (done) {
         var module = moduleFactory(addModule);
@@ -70,4 +80,10 @@ describe("module factory", function () {
 
         module.in_int(1);
     });
+
+    it("should proxy returning functions", function () {
+        var module = moduleFactory(templateModule);
+        expect(module.out_ui()).toBe("Works!");
+    });
+
 });
