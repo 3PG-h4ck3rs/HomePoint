@@ -13,6 +13,9 @@ var app = express();
 
 var modulesScripts = [];
 
+var moduleRouter = require("./m12n/module-router");
+
+
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "nunjucks");
@@ -30,6 +33,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use("/static", express.static(path.join(__dirname, "static")));
 
+
 // expose module names to the views
 app.use(function(req,res,next){
     res.locals.modulesScripts = modulesScripts;
@@ -41,6 +45,7 @@ app.use("/admin",   require("./controllers/admin"));
 app.use("/api",     require("./controllers/api"));
 app.use("/module",  require("./controllers/module"));
 
+moduleRouter.init(app);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

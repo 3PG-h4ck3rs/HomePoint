@@ -10,27 +10,30 @@
 
     ns.updateDeviceList = function () {
         $.ajax({
-            url: "/api/deviceList",
+            url: "/module/moduleList",
             success: function (res) {
                 loadingIndicator.hide();
-                if (res.devices.length)
+                if (res.modules.length)
                 {
                     emptyDashboardWidget.hide();
                     dashboard.show();
 
-                    if (res.devices.length !== devices.length)
+                    devices = _.clone(res.devices);
+                    dashboardItems.empty();
+
+                    for (var f = 0; f < res.modules.length; f++)
                     {
-                        devices = _.clone(res.devices);
-                        dashboardItems.empty();
-
-                        $.each(res.devices, function (index, deviceInfo) {
-                            var device = new ns.registeredDevice[deviceInfo.type](deviceInfo);
-
-                            device.getDOM(function (dom) {
-                                dashboardItems.append(dom);
-                            });
-                        });
+                        var module = res.modules[f];
+                        dashboardItems.append(module);
                     }
+
+//                    $.each(res.devices, function (index, deviceInfo) {
+//                        var device = new ns.registeredDevice[deviceInfo.type](deviceInfo);
+//
+//                        device.getDOM(function (dom) {
+//                            dashboardItems.append(dom);
+//                        });
+//                    });
                 }
                 else
                 {

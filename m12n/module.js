@@ -1,13 +1,14 @@
 var fs = require("fs");
 var _ = require("lodash");
+var crypto = require('crypto');
 
-var MODULES_FILE = "../modules.json";
+var MODULES_FILE = "modules.json";
 
 function moduleFactory(moduleInfo, moduleID)
 {
     if (moduleInfo.module)
     {
-        var ModuleClass = require("./devices/" + moduleInfo.module + "/block");
+        var ModuleClass = require("../modules/" + moduleInfo.module + "/block");
         return new ModuleClass(moduleID);
     }
     else
@@ -55,8 +56,50 @@ function moduleFactory(moduleInfo, moduleID)
             return module;
         }
     }
-
-
 }
 
-module.exports = moduleFactory;
+function Module()
+{
+    this.checksum = null;
+    this.modules = [];
+}
+
+Module.prototype = {
+    getList: function (callback) {
+        fs.readFile(MODULES_FILE, function (err, data) {
+            if (!err)
+            {
+                var checksum = crypto.createHash('md5').update(data).digest('hex');
+
+                if (!this.checksum || this.checksum != checksum)
+                {
+                    this.checksum = checksum;
+                    this.modules = [];
+
+                    var modulesInfo = JSON.parse(data);
+
+                    for (var f = 0; f < modulesInfo.length; f++)
+                    {
+                        if (modulesInfo[f].out_ui)
+                        {
+                            var ui = moduleFactory(modulesInfo[f]).out_ui()
+                            this.modules.push(ui);
+                        }
+                    }
+                }
+
+
+                callback.call(this, null, this.modules);
+            }
+            else
+            {
+                callback.call(this, err);
+            }
+        });
+
+    }
+}
+
+
+module.exports = new Module();
+module.exports.factory = moduleFactory;

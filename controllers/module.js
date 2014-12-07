@@ -1,33 +1,19 @@
 var express = require('express');
 var router = express.Router();
 var fs = require('fs');
-var moduleFactory = require("../module-builder");
-
-var MODULES_FILE = "modules.json";
+var modules = require("../m12n/module");
 
 router.get("/moduleList", function (req, res) {
-    fs.readFile(MODULES_FILE, function (err, data) {
+    modules.getList(function (err, modules) {
         if (!err)
         {
-            var modulesInfo = JSON.parse(data);
-            var modules = [];
-
-            for (var f = 0; f < modulesInfo.length; f++)
-            {
-                if (modulesInfo[f].out_ui)
-                {
-                    var ui = moduleFactory(modulesInfo[f]).out_ui()
-                    modules.push(ui);
-                }
-            }
-
             res.send({status: "ok", modules: modules});
         }
         else
         {
             res.status(500).send({status: "error", message: "Can't read modules from list"});
         }
-    });
+    })
 });
 
 

@@ -1,4 +1,4 @@
-var moduleFactory = require("../module-builder");
+var moduleFactory = require("../m12n/module").factory;
 
 var addModule = {
     modules: {
