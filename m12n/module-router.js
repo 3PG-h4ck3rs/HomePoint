@@ -18,31 +18,24 @@ function ModuleRouter()
 ModuleRouter.prototype = {
 
     init: function (app) {
+        var router = express.Router();
+
         app.use("/modules", express.static(path.join(__dirname, "../modules")));
 
-        app.use("/modules-api/:moduleId/:method/*", function (req, res, next) {
+        router.post("/send", function (req, res) {
+
+            var params = req.body;
 
             modules.getList(function (err, modules) {
-                var arguments = _.map(req.params[0].split("/"), function (argument) {
-                    var arg = argument;
+                var module = modules[params.moduleId];
 
-                    if (arg === "true")
-                        arg = true;
+                module[params.method].apply(module, params.arguments);
 
-                    if (arg === "false")
-                        arg = false;
-
-                    return arg;
-                });
-
-                var module = modules[parseInt(req.params.moduleId)];
-
-                module[req.params.method].apply(module, arguments);
-
-                res.send({moduleId: req.params.moduleId, method: req.params.method, arguments: arguments});
+                res.send({status: "ok"});
             });
-            
         });
+
+        app.use("/modules-api", router);
     },
 
     addAssetsFolder: function (moduleName, folder) {
