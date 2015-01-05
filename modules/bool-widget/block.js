@@ -6,6 +6,11 @@ function BoolWidgetBlock()
 }
 
 BoolWidgetBlock.prototype = {
+
+    in_bool: function (value) {
+        this.out_bool_callback.call(this, value);
+    },
+
     out_bool: function (callback) {
         this.out_bool_callback = callback;
     },

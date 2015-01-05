@@ -1,16 +1,15 @@
 var ble = require("../../ble");
 
-function SmartletBlock()
+function SmartletBlock(options)
 {
-    this.deviceID = null;
-    this.callback = null;
+    this.options = options;
 }
 
 SmartletBlock.prototype = {
     in_bool: function (value) {
         var state = value ? new Buffer([1]) : new Buffer([0]);
 
-        ble.sendCommand(this.deviceID, '2220', '2222', state, function (err)
+        ble.sendCommand(this.options.deviceID, '2220', '2222', state, function (err)
         {
             if (!err)
             {

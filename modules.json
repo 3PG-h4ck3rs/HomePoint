@@ -5,7 +5,10 @@
                 "module": "bool-widget"
             },
             "m2": {
-                "module": "smartlet"
+                "module": "smartlet",
+                "options": {
+                    "deviceID": "e09701812be3"
+                }
             }
         },
         "relations":[
@@ -22,6 +25,7 @@
             }
         ],
 
-        "out_ui": "m1"
+        "out_ui": "m1",
+        "in_bool": "m1"
     }
 ]

@@ -4,12 +4,12 @@ var crypto = require('crypto');
 
 var MODULES_FILE = "modules.json";
 
-function moduleFactory(moduleInfo, moduleID)
+function moduleFactory(moduleInfo)
 {
     if (moduleInfo.module)
     {
         var ModuleClass = require("../modules/" + moduleInfo.module + "/block");
-        return new ModuleClass(moduleID);
+        return new ModuleClass(moduleInfo.options);
     }
     else
     {
@@ -82,12 +82,11 @@ Module.prototype = {
                     {
                         if (modulesInfo[f].out_ui)
                         {
-                            var ui = moduleFactory(modulesInfo[f]).out_ui()
+                            var ui = moduleFactory(modulesInfo[f]);
                             this.modules.push(ui);
                         }
                     }
                 }
-
 
                 callback.call(this, null, this.modules);
             }

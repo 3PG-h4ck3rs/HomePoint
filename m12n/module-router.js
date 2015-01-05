@@ -2,6 +2,9 @@ var express = require('express');
 
 var send = require("send");
 var path = require("path");
+var _ = require("lodash");
+
+var modules = require("./module");
 
 var include = require("../include");
 
@@ -17,14 +20,28 @@ ModuleRouter.prototype = {
     init: function (app) {
         app.use("/modules", express.static(path.join(__dirname, "../modules")));
 
-        app.use("/modules-api", function (req, res, next) {
+        app.use("/modules-api/:moduleId/:method/*", function (req, res, next) {
 
-            var pathComponents = req.path.strip("/").split("/");
+            modules.getList(function (err, modules) {
+                var arguments = _.map(req.params[0].split("/"), function (argument) {
+                    var arg = argument;
 
-            var method = pathComponents[0];
-            var moduleId = pathComponents[0];
+                    if (arg === "true")
+                        arg = true;
 
-            next();
+                    if (arg === "false")
+                        arg = false;
+
+                    return arg;
+                });
+
+                var module = modules[parseInt(req.params.moduleId)];
+
+                module[req.params.method].apply(module, arguments);
+
+                res.send({moduleId: req.params.moduleId, method: req.params.method, arguments: arguments});
+            });
+            
         });
     },
 

@@ -2,9 +2,9 @@ var nunjucks = require("nunjucks");
 
 // A simple test external module that simply
 // accepts an input and spits it incremented by one
-function TestAddModule(id)
+function TestAddModule(options)
 {
-    this.id = id;
+    this.options = options;
 }
 
 TestAddModule.prototype = {
@@ -20,6 +20,10 @@ TestAddModule.prototype = {
     out_ui: function (){
         var env = nunjucks.configure(__dirname);
         return nunjucks.render("templates/test.html");
+    },
+
+    out_string: function () {
+        return this.options.testString;
     }
 };
 

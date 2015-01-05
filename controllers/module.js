@@ -7,7 +7,14 @@ router.get("/moduleList", function (req, res) {
     modules.getList(function (err, modules) {
         if (!err)
         {
-            res.send({status: "ok", modules: modules});
+            var modulesUI = [];
+
+            for (var f = 0; f < modules.length; f++)
+            {
+                modulesUI.push(modules[f].out_ui());
+            }
+
+            res.send({status: "ok", modules: modulesUI});
         }
         else
         {
