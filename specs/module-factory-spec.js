@@ -50,7 +50,7 @@ var composeDefinedModule = {
 
 describe("module factory", function () {
 
-    it("should be ble to init module with args", function () {
+    it("should be able to init module with args", function () {
         var module = moduleFactory({
             "module": "test-module",
             "options": {

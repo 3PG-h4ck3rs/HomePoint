@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 router.get('/', function(req, res) {
-    res.redirect("/admin/modules");
+  res.render("admin/moduleBuilder.html");
 });
 
 router.get("/modules", function (req, res) {

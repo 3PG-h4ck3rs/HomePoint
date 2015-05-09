@@ -42,7 +42,7 @@ app.use(function(req,res,next){
 
 app.use("/",        require("./controllers/main"));
 app.use("/admin",   require("./controllers/admin"));
-app.use("/api",     require("./controllers/api"));
+app.use("/api/v1",     require("./controllers/api"));
 app.use("/module",  require("./controllers/module"));
 
 moduleRouter.init(app);

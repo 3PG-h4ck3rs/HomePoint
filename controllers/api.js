@@ -5,10 +5,25 @@ var _ = require('lodash');
 var ble = require("../ble");
 
 var fs = require('fs');
+var path = require('path');
 
 var EventSource = require("../event-source");
 
 var DEVICES_FILE = "devices/added.json";
+
+var BLOCKS_FOLDER = path.join(__dirname, "../modules");
+
+router.get("/getBlocks", function (req, res) {
+  var blocks = [];
+
+  fs.readdir(BLOCKS_FOLDER, function (err, files) {
+    files.filter(function (file) {
+      return fs.statSync(path.join(BLOCKS_FOLDER, file)).isDirectory()
+    });
+
+    res.send(files);
+  })
+})
 
 router.get("/discover", function (req, res) {
     res.send({status: "ok", devices: ble.getDevices() });

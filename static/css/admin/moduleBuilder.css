@@ -1,0 +1,59 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body,
+#blocksList,
+#buildArea {
+	height: 100%;
+}
+
+body {
+	background: #070707 url("/static/img/module_builder_bkg.gif") repeat left top;
+	font-family: sans-serif;
+}
+
+.blockItem {
+	background-color: #173a56;
+	color: #4b9fdd;
+	border: 1px solid #051525;
+	position: relative;
+	height: 22px;
+	font-size: 10px;
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+.blockItem:before {
+	content: " ";
+	position: absolute;
+	z-index: -1;
+	top: -2px;
+	right: -2px;
+	bottom: -2px;
+	left: -2px;
+	border: 1px solid #3b8bbe;
+}
+
+#blocksList {
+	background: rgba(255, 255, 255, .1);
+	width: 15%;
+	float: left;
+	border-right: 1px solid silver;
+}
+
+	#blocksList .blockItem {
+		margin: 3px;
+	}
+
+#buildArea {
+	float: left;
+	width: 85%;
+}
+
+	#buildArea .blockItem {
+		width: 200px;
+		height: 50px;
+	}
