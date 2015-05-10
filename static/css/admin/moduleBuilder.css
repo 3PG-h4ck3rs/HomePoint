@@ -15,6 +15,15 @@ body {
 	font-family: sans-serif;
 }
 
+.noSelect {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	}
+
 .blockItem {
 	background-color: #173a56;
 	color: #4b9fdd;
@@ -24,6 +33,17 @@ body {
 	font-size: 10px;
 	font-weight: 700;
 	text-transform: uppercase;
+
+	cursor: move;
+	cursor: grab;
+	cursor: -moz-grab;
+	cursor: -webkit-grab;
+}
+
+.blockItem.ui-draggable-dragging {
+	cursor: grabbing;
+	cursor: -moz-grabbing;
+	cursor: -webkit-grabbing;
 }
 
 .blockItem:before {
@@ -36,6 +56,36 @@ body {
 	left: -2px;
 	border: 1px solid #3b8bbe;
 }
+
+	.blockItem .iodock
+	{
+		position: absolute;
+		width: 100%;
+		text-align: center;
+		cursor: default;
+	}
+
+	.blockItem .inputs {
+		top: -13px;
+	}
+
+	.blockItem .outputs {
+		bottom: -13px;
+	}
+
+		.iodock .ioport {
+			border-radius: 50%;
+			width: 6px;
+			height: 6px;
+			cursor: pointer;
+			display: inline-block;
+			margin-left: 3px;
+			margin-right: 3px;
+		}
+
+		.iodock .ioport.bool {
+			background-color: white;
+		}
 
 #blocksList {
 	background: rgba(255, 255, 255, .1);

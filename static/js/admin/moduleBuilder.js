@@ -1,8 +1,10 @@
 function BuildArea() {
-	paper.install(window);
 	this.buildAreaEl = $("#buildArea");
 	this.canvas = document.getElementById("canvas");
+
+	paper.install(window);
 	paper.setup(this.canvas);
+
 	this.buildAreaEl.droppable({
 		drop: $.proxy(function (event, ui) {
 			var blockInfo = $(ui.draggable).data("blockInfo");
@@ -11,23 +13,46 @@ function BuildArea() {
 			}
 		}, this)
 	});
+
+	$(document).on("click", ".outputs .ioport", $.proxy(function (event) {
+		var buildAreaPosition = this.buildAreaEl.offset();
+		var portPosition = $(event.target).offset();
+
+		var startXPosition = portPosition.left - buildAreaPosition.left + 3;
+		var startYPosition = portPosition.top - buildAreaPosition.top + 3;
+
+		this.startLine(startXPosition, startYPosition);
+
+	}, this));
 }
 
 BuildArea.prototype = {
 
-	addLine: function (start, end) {
+
+	addLine: function (startx, starty, endx, endy) {
 		var path = new Path();
-		path.strokeColor = '#3b8bbe';
-		path.strokeWidth = 3;
-		var start = new Segment(new Point(start), null, new Point(0, 100));
-		var end = new Segment(new Point(end), new Point(0, -100), null);
+		path.strokeColor = '#fff';
+		path.strokeWidth = 1;
+		var start = new Segment(new Point([startx, starty]), null, new Point(0, 100));
+		var end = new Segment(new Point([endx, endy]), new Point(0, -100), null);
 		path.add(start, end);
 		// path.fullySelected = true;
 		this.draw();
+		return path;
+	},
+
+	startLine: function (x, y) {
+		var path = this.addLine(x, y, x, y);
+		var tool = new Tool();
+
+		tool.onMouseMove = $.proxy(function (event) {
+			path.segments[1].point = event.point;
+			this.draw();
+		}, this);
 	},
 
 	addBlock: function (blockInfo, position) {
-		$.get("/static/partials/admin/blockItem_list.html", $.proxy(function (template) {
+		$.get("/static/partials/admin/blockItem_builder.html", $.proxy(function (template) {
 
 			var blockDOM = $(Mustache.render(template, blockInfo));
 			blockDOM.draggable({
@@ -56,7 +81,6 @@ BuildArea.prototype = {
 }
 
 var buildArea = new BuildArea();
+
 buildArea.resizeCanvas();
-buildArea.addLine([50,50], [100, 100]);
-buildArea.addLine([125,50], [200, 200]);
 window.addEventListener('resize', $.proxy(buildArea.resizeCanvas, buildArea), false);
